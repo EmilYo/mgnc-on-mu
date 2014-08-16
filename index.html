@@ -17,17 +17,123 @@
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
+    <style type='text/css'>
+      body {
+        padding-top: 70px;
+        padding-bottom: 30px;
+      }
+
+      .theme-dropdown .dropdown-menu {
+        position: static;
+        display: block;
+        margin-bottom: 20px;
+      }
+
+      .theme-showcase > p > .btn {
+        margin: 5px 0;
+      }
+
+      .theme-showcase .navbar .container {
+        width: auto;
+      }
+    </style>
+
   </head>
-  <body role="document">
-    <span>&nbsp;</span>
+  <body id='home' role="document">
+    <!-- Fixed navbar -->
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#home">MGNC to MU</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="#home">Home</a></li>
+            <li><a href="#list">List</a></li>
+            <li><a href="#donate">Donate</a></li>
+            <li><a href="#references">References</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+
     <div class="container theme-showcase" role="main">
+      <!-- Main jumbotron for a primary marketing message or call to action -->
+      <div class="jumbotron">
+        <h2>M​arvel G​raphic N​ovel C​ollection on M​arvel U​nlimited</h2>
+        <p><a href='http://en.wikipedia.org/wiki/The_Official_Marvel_Graphic_Novel_Collection' target="_blank">The Official Marvel Graphic Novel Collection</a> is a collection of Marvel graphic novel published by Hachette Partworks. Bellow you can find links to issues in this collection on <a href='https://marvel.com/comics/unlimited/home' target='_blank'>Marvel Unlimited</a> service. After clicking a link you can read it in the browser, or add to Library and then read it on Marvel Unlimited app.</p>
+      </div>
+
+      <div id='list' class="page-header">
+        <h1>List</h1>
+      </div>
 
       <div class="progress">
         <div id="progress-bar" class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">0%</div>
       </div>
-      <pre id="input" style="display: none;"></pre>
-      <div id="table"></div>
+      <div id="input" class="alert alert-danger" role="alert" style="display: none;">
+        <strong>Oh snap!</strong> Change a few things up and try submitting again.
+      </div>
+      <table id="table" class="table table-striped" style="display: none;">
+        <thead>
+          <tr>
+            <td><span>#</span></td>
+            <td class="col-md-3"><span>Title</span></td>
+            <td class="col-md-2"><span>Collecting</span></td>
+            <td class="col-md-2"><span>Release date</span></td>
+            <td><span></span></td>
+            <td><span></span></td>
+            <td><span></span></td>
+            <td><span></span></td>
+            <td><span></span></td>
+            <td><span></span></td>
+            <td><span></span></td>
+            <td><span></span></td>
+            <td><span></span></td>
+            <td><span></span></td>
+          </tr>
+        </thead>
+      </table>
 
+    <div id='donate' class="page-header">
+      <h1>Donate</h1>
+    </div>
+
+    <div class='col-md-12'>
+      <p>If you like this idea, please consider a donation.</p>
+      <div class='col-md-3'>
+        <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+        <input type="hidden" name="cmd" value="_s-xclick">
+        <input type="hidden" name="hosted_button_id" value="GNV8R88TNDXLW">
+        <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+        <img alt="" border="0" src="https://www.paypalobjects.com/pl_PL/i/scr/pixel.gif" width="1" height="1">
+        </form>
+      </div>
+
+      <div class='col-md-3'>
+        <script src="http://coinwidget.com/widget/coin.js"></script>
+        <script>
+        CoinWidgetCom.go({
+        	wallet_address: "1KPmsxoEH1TiZ6yNTvStsqaVjaAJtYPcNb"
+        	, currency: "bitcoin"
+        	, counter: "count"
+        	, alignment: "bl"
+        	, qrcode: true
+        	, auto_show: false
+        	, lbl_button: "Donate with Bitcoin"
+        	, lbl_address: "My Bitcoin Address:"
+        	, lbl_count: "donations"
+        	, lbl_amount: "BTC"
+        });
+        </script>
+      </div>
+      <p class='col-md-12'>&nbsp;</p>
+    </div>
+
+    <div id='references' class="page-header">
+      <h1>References</h1>
+    </div>
+    <p>Information about titles, collecting issues, and release dates from <a href='http://en.wikipedia.org/wiki/The_Official_Marvel_Graphic_Novel_Collection#List_of_books' target='_blank'>Wikipedia</a>.</p>
 
     </div> <!-- /container -->
 
@@ -68,33 +174,52 @@
         .pipe( CSV.parse )
         .done( function(rows) {
             table("#table", rows );
+            $('#table')
+            .css('display', 'block');
         });
          // dump to html for visualizing output
       function table (el, data){
         var value = 30;
+        var links = '';
 
-        var t = $('<table  class="table table-striped"/>').appendTo( el );
+        var t = el;
         var row, value, tr, td, span, link, j, i;
-        for( i = 0; i < data.length; i++ ) {
-            //$('#progress-bar').css('width', '50%');
+        for( i = 1; i < data.length; i++ ) {
             row = data[i];
             tr = $('<tr/>').appendTo(t);
             for( j = 0; j < row.length; j++ ) {
+              //skip column with Vol. value
+              if (j == 1) continue;
+
               td = $('<td />')
                         .appendTo(tr);
               if (j < 5 || row[j] == '')
                 span = $('<span />')
                       .appendTo(td)
                       .text( String(row[j]) );
-              else
+              else {
                 link = $('<a />', {
                       href : String(row[j]),
-                      text : 'Issue ' + (j - 4),
+                      text : '#' + (j - 4),
                       target : '_blank'
                       })
                       .appendTo(td);
+                links += 'window.open("' + String(row[j]) + '");'
+              }
             }
-            console.log(value);
+
+            td = $('<td />')
+                      .appendTo(tr);
+            if (links != '')
+              link = $('<a />', {
+                    onclick : links,
+                    text : 'Open all',
+                    target : '_blank',
+                    style : 'cursor:pointer;'
+                    })
+                    .appendTo(td);
+            links = '';
+
             value = Math.min( 100,  Math.ceil(value + (70 / data.length)));
             $('#progress-bar')
               .css('width', value + '%')
@@ -103,6 +228,12 @@
         }
       }
     })
+
+    //Switching navbar options
+    $('.nav li a').on('click', function() {
+      $(this).parent().parent().find('.active').removeClass('active');
+      $(this).parent().addClass('active');
+    });
     </script>
   </body>
 </html>
